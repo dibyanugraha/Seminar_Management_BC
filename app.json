@@ -1,0 +1,38 @@
+{
+  "id": "866a9cc5-fbb5-4f21-bd3a-dc6cdcc92153",
+  "name": "Seminar Management",
+  "publisher": "Ariestya Dibyanugraha",
+  "version": "1.0.0.0",
+  "brief": "Seminar Management for Microsoft Dynamics 365 Business Central",
+  "description": "Seminar Management for Microsoft Dynamics 365 Business Central as published in Microsoft C/SIDE Solution Development",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "63ca2fa4-4f03-4f2b-a480-172fef340d3f",
+      "publisher": "Microsoft",
+      "name": "System Application",
+      "version": "17.0.0.0"
+    },
+    {
+      "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
+      "publisher": "Microsoft",
+      "name": "Base Application",
+      "version": "17.0.0.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "17.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 99999
+    }
+  ],
+  "contextSensitiveHelpUrl": "https://www.technosoft.co.id/",
+  "showMyCode": true,
+  "runtime": "6.0"
+}
