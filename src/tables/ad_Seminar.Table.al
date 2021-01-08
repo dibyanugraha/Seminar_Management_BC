@@ -9,6 +9,16 @@ table 50000 ad_Seminar
         {
             Caption = 'No.';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "No." = xRec."No." then
+                    exit;
+
+                SeminarSetup.Get();
+                NoSeriesMgt.TestManual(SeminarSetup."Seminar Nos.");
+                "No. Series" := '';
+            end;
         }
         field(2; Name; Text[100])
         {
@@ -34,7 +44,15 @@ table 50000 ad_Seminar
         field(6; "Search Name"; Code[50])
         {
             Caption = 'Search Name';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if ("Search Name" = UpperCase(xRec.Name))
+                    or ("Search Name" = '') then begin
+                    "Search Name" := Name;
+                end;
+            end;
         }
         field(7; Blocked; Boolean)
         {
@@ -64,6 +82,14 @@ table 50000 ad_Seminar
             Caption = 'Gen. Prod. Posting Group';
             DataClassification = CustomerContent;
             TableRelation = "Gen. Product Posting Group";
+
+            trigger OnValidate()
+            begin
+                if xRec."Gen. Prod. Posting Group" = "Gen. Prod. Posting Group" then
+                    exit;
+                if GenProdPostingGroup.ValidateVatProdPostingGroup(GenProdPostingGroup, "VAT Prod. Posting Group") then
+                    Validate("VAT Prod. Posting Group", GenProdPostingGroup."Def. VAT Prod. Posting Group");
+            end;
         }
         field(12; "VAT Prod. Posting Group"; Code[20])
         {
@@ -86,4 +112,44 @@ table 50000 ad_Seminar
         }
         key(Search; "Search Name") { }
     }
+
+    var
+        SeminarSetup: Record ad_SeminarSetup;
+        CommentLine: Record "Comment Line";
+        Seminar: Record ad_Seminar;
+        GenProdPostingGroup: Record "Gen. Product Posting Group";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+
+    trigger OnInsert()
+    begin
+        if "No." <> '' then
+            exit;
+
+        SeminarSetup.Get();
+        SeminarSetup.TestField("Seminar Nos.");
+        NoSeriesMgt.InitSeries(
+            SeminarSetup."Seminar Nos.",
+            xRec."No. Series", 0D, "No.", "No. Series");
+    end;
+
+    trigger OnDelete()
+    begin
+        CommentLine.Reset();
+        CommentLine.SetRange("Table Name", CommentLine."Table Name"::Seminar);
+        CommentLine.SetRange("No.", "No.");
+        CommentLine.DeleteAll();
+    end;
+
+    procedure AssistEdit(): Boolean
+    begin
+        Seminar := Rec;
+        SeminarSetup.Get();
+        SeminarSetup.TESTFIELD("Seminar Nos.");
+        if NoSeriesMgt.SelectSeries(SeminarSetup."Seminar Nos.",
+            xRec."No. Series", "No. Series") then begin
+            NoSeriesMgt.SetSeries("No.");
+            Rec := Seminar;
+            exit(true);
+        end;
+    end;
 }
