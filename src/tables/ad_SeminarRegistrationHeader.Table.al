@@ -37,6 +37,24 @@ table 50010 ad_SeminarRegistrationHeader
             Caption = 'Seminar No.';
             DataClassification = CustomerContent;
             TableRelation = ad_Seminar where(Blocked = const(false));
+
+            trigger OnValidate()
+            begin
+                IF "Seminar No." = xRec."Seminar No." THEN
+                    exit;
+
+                Seminar.GET("Seminar No.");
+                Seminar.TESTFIELD(Blocked, FALSE);
+                Seminar.TESTFIELD("Gen. Prod. Posting Group");
+                Seminar.TESTFIELD("VAT Prod. Posting Group");
+                "Seminar Name" := Seminar.Name;
+                Duration := Seminar."Seminar Duration";
+                "Seminar Price" := Seminar."Seminar Price";
+                "Gen. Prod. Posting Group" := Seminar."Gen. Prod. Posting Group";
+                "VAT Prod. Posting Group" := Seminar."VAT Prod. Posting Group";
+                "Minimum Participants" := Seminar."Minimum Participants";
+                "Maximum Participants" := Seminar."Maximum Participants";
+            end;
         }
         field(4; "Seminar Name"; Text[100])
         {
@@ -79,6 +97,49 @@ table 50010 ad_SeminarRegistrationHeader
             Caption = 'Room Resource No.';
             DataClassification = CustomerContent;
             TableRelation = Resource where(Type = const(Room));
+
+            trigger OnValidate()
+            var
+                SeminarRoom: Record Resource;
+            begin
+                if "Room Resource No." = xRec."Room Resource No." then
+                    exit;
+
+                IF "Room Resource No." = '' THEN BEGIN
+                    "Room Name" := '';
+                    "Room Address" := '';
+                    "Room Address 2" := '';
+                    "Room Post Code" := '';
+                    "Room City" := '';
+                    "Room County" := '';
+                    "Room Country/Reg. Code" := '';
+                END ELSE BEGIN
+                    SeminarRoom.GET("Room Resource No.");
+                    "Room Name" := SeminarRoom.Name;
+                    "Room Address" := SeminarRoom.Address;
+                    "Room Address 2" := SeminarRoom."Address 2";
+                    "Room Post Code" := SeminarRoom."Post Code";
+                    "Room City" := SeminarRoom.City;
+                    "Room County" := SeminarRoom.County;
+                    "Room Country/Reg. Code" := SeminarRoom."Country/Region Code";
+
+                    IF CurrFieldNo = 0 THEN
+                        exit;
+
+                    IF (SeminarRoom."Maximum Participants" <> 0) AND
+                       (SeminarRoom."Maximum Participants" < "Maximum Participants")
+                    THEN BEGIN
+                        IF CONFIRM(ChangeSeminarRoomQst, TRUE,
+                             "Maximum Participants",
+                             SeminarRoom."Maximum Participants",
+                             FIELDCAPTION("Maximum Participants"),
+                             "Maximum Participants",
+                             SeminarRoom."Maximum Participants")
+                        THEN
+                            "Maximum Participants" := SeminarRoom."Maximum Participants";
+                    END;
+                END;
+            end;
         }
         field(12; "Room Name"; Text[100])
         {
@@ -224,6 +285,7 @@ table 50010 ad_SeminarRegistrationHeader
         Seminar: Record ad_Seminar;
         SeminarRegHeader: Record ad_SeminarRegistrationHeader;
         SeminarCommentLine: Record ad_SeminarCommentLine;
+        ChangeSeminarRoomQst: Label 'This Seminar is for %1 participants. \The selected Room has a maximum of %2 participants \Do you want to change %3 for the Seminar from %4 to %5?';
 
     trigger OnInsert()
     begin
