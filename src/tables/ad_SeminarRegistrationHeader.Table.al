@@ -9,16 +9,34 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'No.';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "No." = xRec."No." then
+                    exit;
+
+                SeminarSetup.Get();
+                SeminarSetup.TestField("Seminar Registration Nos.");
+                NoSeriesMgt.TestManual(SeminarSetup."Seminar Registration Nos.");
+                "No. Series" := '';
+            end;
         }
         field(2; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Starting Date" <> xRec."Starting Date" then
+                    TestField(Status, Status::Planning);
+            end;
         }
         field(3; "Seminar No."; Code[20])
         {
             Caption = 'Seminar No.';
             DataClassification = CustomerContent;
+            TableRelation = ad_Seminar where(Blocked = const(false));
         }
         field(4; "Seminar Name"; Text[100])
         {
@@ -29,6 +47,7 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Instructor Resource No.';
             DataClassification = CustomerContent;
+            TableRelation = Resource where(Type = const(Person));
         }
         field(6; "Instructor Name"; Text[100])
         {
@@ -59,8 +78,9 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Room Resource No.';
             DataClassification = CustomerContent;
+            TableRelation = Resource where(Type = const(Room));
         }
-        field(12; "Room Name"; Text[50])
+        field(12; "Room Name"; Text[100])
         {
             Caption = 'Room Name';
             DataClassification = CustomerContent;
@@ -79,6 +99,17 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Room Post Code';
             DataClassification = CustomerContent;
+            TableRelation = "Post Code";
+            ValidateTableRelation = false;
+
+            trigger OnValidate()
+            begin
+                PostCode.ValidatePostCode("Room City",
+                    "Room Post Code",
+                    "Room County",
+                    "Room Country/Reg. Code",
+                    (CurrFieldNo <> 0) and GuiAllowed);
+            end;
         }
         field(16; "Room City"; Text[50])
         {
@@ -89,6 +120,7 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Room Country/Reg. Code';
             DataClassification = CustomerContent;
+            TableRelation = "Country/Region";
         }
         field(18; "Room County"; Text[30])
         {
@@ -104,11 +136,13 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Gen. Prod. Posting Group';
             DataClassification = CustomerContent;
+            TableRelation = "Gen. Product Posting Group";
         }
         field(21; "VAT Prod. Posting Group"; Code[20])
         {
             Caption = 'VAT Prod. Posting Group';
             DataClassification = CustomerContent;
+            TableRelation = "VAT Product Posting Group";
         }
         field(22; Comment; Boolean)
         {
@@ -129,6 +163,7 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
         }
         field(26; "No. Series"; Code[20])
         {
@@ -139,6 +174,31 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Caption = 'Posting No. Series';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
+
+            trigger OnValidate()
+            begin
+                if "Posting No. Series" = '' then
+                    exit;
+                TestField("Posting No.", '');
+
+                SeminarSetup.Get();
+                SeminarSetup.TestField("Seminar Registration Nos.");
+                SeminarSetup.TestField("Posted Seminar Reg. Nos.");
+                NoSeriesMgt.TestSeries(SeminarSetup."Posted Seminar Reg. Nos.", "Posting No. Series");
+            end;
+
+            trigger OnLookup()
+            begin
+                SeminarRegHeader := Rec;
+                SeminarSetup.Get();
+                SeminarSetup.TestField("Seminar Registration Nos.");
+                SeminarSetup.TestField("Posted Seminar Reg. Nos.");
+                if NoSeriesMgt.LookupSeries(SeminarSetup."Posted Seminar Reg. Nos.", "Posting No. Series") then
+                    Validate("Posting No. Series");
+
+                Rec := SeminarRegHeader;
+            end;
         }
         field(28; "Posting No."; Code[20])
         {
@@ -162,12 +222,13 @@ table 50010 ad_SeminarRegistrationHeader
         NoSeriesMgt: Codeunit NoSeriesManagement;
         PostCode: Record "Post Code";
         Seminar: Record ad_Seminar;
+        SeminarRegHeader: Record ad_SeminarRegistrationHeader;
 
     trigger OnInsert()
     begin
-        IF "No." = '' THEN BEGIN
-            SeminarSetup.GET;
-            SeminarSetup.TESTFIELD("Seminar Registration Nos.");
+        if "No." = '' then begin
+            SeminarSetup.Get();
+            SeminarSetup.TestField("Seminar Registration Nos.");
             NoSeriesMgt.InitSeries(SeminarSetup."Seminar Registration Nos.", xRec."No. Series", 0D, "No.", "No. Series");
         END;
         InitRecord;
@@ -175,7 +236,7 @@ table 50010 ad_SeminarRegistrationHeader
 
     trigger OnDelete()
     begin
-        TESTFIELD(Status, Status::Cancelled);
+        TestField(Status, Status::Cancelled);
     end;
 
     procedure InitRecord()
@@ -188,5 +249,22 @@ table 50010 ad_SeminarRegistrationHeader
         SeminarSetup.Get();
         SeminarSetup.TestField("Posted Seminar Reg. Nos.");
         NoSeriesMgt.SetDefaultSeries("Posting No. Series", SeminarSetup."Posted Seminar Reg. Nos.");
+    end;
+
+    procedure AssistEdit(OldSeminarRegHeader: Record ad_SeminarRegistrationHeader): Boolean
+    begin
+        SeminarRegHeader := Rec;
+        SeminarSetup.Get();
+        SeminarSetup.TestField("Seminar Registration Nos.");
+        if not NoSeriesMgt.SelectSeries(
+            SeminarSetup."Seminar Registration Nos.",
+            OldSeminarRegHeader."No. Series", "No. Series") then
+            exit(false);
+
+        SeminarSetup.Get();
+        SeminarSetup.TestField("Seminar Registration Nos.");
+        NoSeriesMgt.SetSeries("No.");
+        Rec := SeminarRegHeader;
+        exit(TRUE);
     end;
 }
