@@ -9,3 +9,14 @@ This application is intended to reimplement that training course as close as pos
 
 ## Structure
 Each chapter will be divided into branches. Main/Master branch always provide the most complete source code of course.
+
+## Notable notes
+You may find my codes little different, there are some codes optimization and tidy up here and there, compared to the original Dynamics NAV 2013 C/AL source code. There are so many changes happened between NAV 2013 and Business Central (currently at BC 17.x a.k.a. 2020 wave 2).
+
+These are some different that you might want to keep in mind:
+1.  Reduced nested IF..THEN when possible (more defensive programming)
+2.  The use of ISEMPTY instead of FINDFIRST if it's applicable
+3.  Updated codes from latest BC 17, if there are any
+4.  Avoidance of FlowField in Name field whenever possible
+5.  Updated fields' length from latest BC 17 (eg. Name are lengthen to 100 now)
+6.  And more, I will post them whenever I remember
