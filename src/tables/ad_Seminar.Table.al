@@ -116,7 +116,6 @@ table 50000 ad_Seminar
     var
         SeminarSetup: Record ad_SeminarSetup;
         CommentLine: Record "Comment Line";
-        Seminar: Record ad_Seminar;
         GenProdPostingGroup: Record "Gen. Product Posting Group";
         NoSeriesMgt: Codeunit NoSeriesManagement;
 
@@ -140,7 +139,9 @@ table 50000 ad_Seminar
         CommentLine.DeleteAll();
     end;
 
-    procedure AssistEdit(): Boolean
+    procedure AssistEdit(OldSeminar: Record ad_Seminar): Boolean
+    var
+        Seminar: Record ad_Seminar;
     begin
         Seminar := Rec;
         SeminarSetup.Get();
