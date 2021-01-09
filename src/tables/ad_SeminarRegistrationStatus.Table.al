@@ -147,6 +147,10 @@ table 50010 ad_SeminarRegistrationHeader
         {
             Clustered = true;
         }
+        key(Index2; "Room Resource No.")
+        {
+            SumIndexFields = Duration;
+        }
     }
 
 }
