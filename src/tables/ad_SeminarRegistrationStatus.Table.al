@@ -130,6 +130,11 @@ table 50010 ad_SeminarRegistrationHeader
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
         }
+        field(26; "No. Series"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series";
+        }
         field(27; "Posting No. Series"; Code[20])
         {
             Caption = 'Posting No. Series';
@@ -152,5 +157,36 @@ table 50010 ad_SeminarRegistrationHeader
             SumIndexFields = Duration;
         }
     }
+    var
+        SeminarSetup: Record ad_SeminarSetup;
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        PostCode: Record "Post Code";
+        Seminar: Record ad_Seminar;
 
+    trigger OnInsert()
+    begin
+        IF "No." = '' THEN BEGIN
+            SeminarSetup.GET;
+            SeminarSetup.TESTFIELD("Seminar Registration Nos.");
+            NoSeriesMgt.InitSeries(SeminarSetup."Seminar Registration Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+        END;
+        InitRecord;
+    end;
+
+    trigger OnDelete()
+    begin
+        TESTFIELD(Status, Status::Cancelled);
+    end;
+
+    procedure InitRecord()
+    begin
+        if "Posting Date" = 0D then
+            "Posting Date" := WorkDate();
+
+        "Document Date" := WorkDate();
+
+        SeminarSetup.Get();
+        SeminarSetup.TestField("Posted Seminar Reg. Nos.");
+        NoSeriesMgt.SetDefaultSeries("Posting No. Series", SeminarSetup."Posted Seminar Reg. Nos.");
+    end;
 }
