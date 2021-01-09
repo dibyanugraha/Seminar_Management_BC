@@ -223,6 +223,7 @@ table 50010 ad_SeminarRegistrationHeader
         PostCode: Record "Post Code";
         Seminar: Record ad_Seminar;
         SeminarRegHeader: Record ad_SeminarRegistrationHeader;
+        SeminarCommentLine: Record ad_SeminarCommentLine;
 
     trigger OnInsert()
     begin
@@ -237,6 +238,12 @@ table 50010 ad_SeminarRegistrationHeader
     trigger OnDelete()
     begin
         TestField(Status, Status::Cancelled);
+
+        SeminarCommentLine.Reset();
+        SeminarCommentLine.SetRange(
+            "Document Type", SeminarCommentLine."Document Type"::"Seminar Registration");
+        SeminarCommentLine.SetRange("No.", "No.");
+        SeminarCommentLine.DeleteAll();
     end;
 
     procedure InitRecord()
