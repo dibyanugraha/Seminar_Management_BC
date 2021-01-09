@@ -30,6 +30,43 @@ table 50011 ad_SeminarRegistrationLine
         {
             Caption = 'Participant Contact No.';
             DataClassification = CustomerContent;
+            TableRelation = Contact;
+
+            trigger OnValidate()
+            begin
+                IF ("Bill-to Customer No." = '') or
+                   ("Participant Contact No." = '')
+                THEN
+                    exit;
+
+                Contact.GET("Participant Contact No.");
+                ContactBusinessRelation.RESET;
+                ContactBusinessRelation.SETCURRENTKEY("Link to Table", "No.");
+                ContactBusinessRelation.SETRANGE("Link to Table", ContactBusinessRelation."Link to Table"::Customer);
+                ContactBusinessRelation.SETRANGE("No.", "Bill-to Customer No.");
+                IF not ContactBusinessRelation.FINDFIRST THEN
+                    exit;
+
+                IF ContactBusinessRelation."Contact No." <> Contact."Company No." THEN BEGIN
+                    ERROR(ContactHasDifferentCompanyThanCustomer, Contact."No.", Contact.Name, "Bill-to Customer No.");
+                END;
+            end;
+
+            trigger OnLookup()
+            begin
+                ContactBusinessRelation.RESET;
+                ContactBusinessRelation.SETRANGE("Link to Table", ContactBusinessRelation."Link to Table"::Customer);
+                ContactBusinessRelation.SETRANGE("No.", "Bill-to Customer No.");
+                IF not ContactBusinessRelation.FINDFIRST THEN
+                    exit;
+
+                Contact.Reset();
+                Contact.SETRANGE("Company No.", ContactBusinessRelation."Contact No.");
+                IF PAGE.RUNMODAL(PAGE::"Contact List", Contact) = ACTION::LookupOK THEN BEGIN
+                    "Participant Contact No." := Contact."No.";
+                    "Participant Name" := Contact.Name;
+                END;
+            end;
         }
         field(5; "Participant Name"; Text[100])
         {
@@ -155,6 +192,9 @@ table 50011 ad_SeminarRegistrationLine
     var
         GLSetup: Record "General Ledger Setup";
         SeminarRegHeader: Record ad_SeminarRegistrationHeader;
+        Contact: Record Contact;
+        ContactBusinessRelation: Record "Contact Business Relation";
+        ContactHasDifferentCompanyThanCustomer: Label 'Contact %1 %2 is related to a different company than customer %3.';
 
     PROCEDURE GetSeminarRegHeader();
     BEGIN
