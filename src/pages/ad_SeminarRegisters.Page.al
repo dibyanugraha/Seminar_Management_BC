@@ -56,5 +56,23 @@ page 50022 ad_SeminarRegisters
             }
         }
     }
+    actions
+    {
+        area(Navigation)
+        {
+            group(Register)
+            {
+                Image = Register;
+                action("Seminar Ledger")
+                {
+                    ApplicationArea = All;
+                    Image = WarrantyLedger;
+                    RunObject = codeunit ad_SeminarRegShowLedger;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                }
+            }
+        }
+    }
 
 }
