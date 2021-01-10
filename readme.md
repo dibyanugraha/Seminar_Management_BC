@@ -20,4 +20,6 @@ These are some different that you might want to keep in mind:
 4.  Avoidance of FlowField in Name field whenever possible
 5.  Updated fields' length from latest BC 17 (eg. Name are lengthen to 100 now)
 6.  Of course the use of Enum instead of Option
-7.  And more, I will post them whenever I remember
+7.  Of course (again), due to new regulation, every "with" statements are out
+8.  Point #7, every single pages now requires to prefix "Rec." whenever referring to table's fields or functions
+9.  And more, I will post them whenever I remember
