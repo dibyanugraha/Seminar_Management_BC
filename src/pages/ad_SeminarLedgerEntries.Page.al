@@ -131,6 +131,18 @@ page 50021 ad_SeminarLedgerEntries
                 }
             }
         }
+
+        area(FactBoxes)
+        {
+            systempart(Links; Links)
+            {
+                ApplicationArea = RecordLinks;
+            }
+            systempart(Notes; Notes)
+            {
+                ApplicationArea = Notes;
+            }
+        }
     }
 
 }
