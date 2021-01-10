@@ -19,6 +19,7 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Seminar No.';
             DataClassification = CustomerContent;
+            TableRelation = ad_Seminar;
         }
         field(4; "Posting Date"; Date)
         {
@@ -35,7 +36,7 @@ table 50031 ad_SeminarJournalLine
             Caption = 'Document Date';
             DataClassification = CustomerContent;
         }
-        field(6; "Entry Type"; Enum "Acc. Schedule Line Totaling Type")
+        field(6; "Entry Type"; Enum ad_SeminarJournalEntryType)
         {
             Caption = 'Entry Type';
             DataClassification = CustomerContent;
@@ -54,13 +55,14 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Bill-to Customer No.';
             DataClassification = CustomerContent;
+            TableRelation = Customer;
         }
-        field(11; "Charge Type"; Enum "Acc. Schedule Line Totaling Type")
+        field(11; "Charge Type"; Enum ad_SeminarJournalChargeType)
         {
             Caption = 'Charge Type';
             DataClassification = CustomerContent;
         }
-        field(12; Type; Enum "Acc. Schedule Line Totaling Type")
+        field(12; Type; Enum ad_SeminarChargeType)
         {
             Caption = 'Type';
             DataClassification = CustomerContent;
@@ -84,6 +86,7 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Participant Contact No.';
             DataClassification = CustomerContent;
+            TableRelation = Contact;
         }
         field(17; "Participant Name"; Text[100])
         {
@@ -99,11 +102,13 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Room Resource No.';
             DataClassification = CustomerContent;
+            TableRelation = Resource where(Type = const(Room));
         }
         field(20; "Instructor Resource No."; Code[20])
         {
             Caption = 'Instructor Resource No.';
             DataClassification = CustomerContent;
+            TableRelation = Resource where(Type = const(Person));
         }
         field(21; "Starting Date"; Date)
         {
@@ -119,8 +124,9 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Res. Ledger Entry No.';
             DataClassification = CustomerContent;
+            TableRelation = "Res. Ledger Entry";
         }
-        field(30; "Source Type"; Enum "Acc. Schedule Line Totaling Type")
+        field(30; "Source Type"; Enum ad_SeminarJournalSourceType)
         {
             Caption = 'Source Type';
             DataClassification = CustomerContent;
@@ -129,6 +135,7 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Source No.';
             DataClassification = CustomerContent;
+            TableRelation = if ("Source Type" = const(Seminar)) ad_Seminar;
         }
         field(32; "Journal Batch Name"; Code[20])
         {
@@ -139,16 +146,20 @@ table 50031 ad_SeminarJournalLine
         {
             Caption = 'Source Code';
             DataClassification = CustomerContent;
+            TableRelation = "Source Code";
+            Editable = false;
         }
         field(34; "Reason Code"; Code[20])
         {
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
+            TableRelation = "Reason Code";
         }
         field(35; "Posting No. Series"; Code[20])
         {
             Caption = 'Posting No. Series';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
     }
     keys
