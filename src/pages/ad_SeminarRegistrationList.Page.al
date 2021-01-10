@@ -6,6 +6,7 @@ page 50013 ad_SeminarRegistrationList
     SourceTable = ad_SeminarRegistrationHeader;
     UsageCategory = Lists;
     Editable = false;
+    CardPageId = ad_SeminarRegistration;
 
     layout
     {
@@ -46,6 +47,11 @@ page 50013 ad_SeminarRegistrationList
                     ApplicationArea = All;
                 }
             }
+            part(SeminarDetails; ad_SeminarDetailsFactbox)
+            {
+                ApplicationArea = All;
+                SubPageLink = "No." = field("Seminar No.");
+            }
             systempart(RecordLinks; Links)
             {
                 ApplicationArea = RecordLinks;
@@ -64,11 +70,20 @@ page 50013 ad_SeminarRegistrationList
             {
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = Comment;
                     RunObject = page ad_SeminarCommentSheet;
                     RunPageLink = "No." = field("No.");
                     RunPageView = where("Document Type" = const("Seminar Registration"));
+                }
+                action("&Charges")
+                {
+                    ApplicationArea = All;
+                    Caption = '&Charges';
+                    Image = Cost;
+                    RunObject = page ad_SeminarCharges;
+                    RunPageLink = "Document No." = field("No.");
                 }
             }
         }

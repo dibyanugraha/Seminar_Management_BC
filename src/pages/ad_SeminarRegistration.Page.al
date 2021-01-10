@@ -146,4 +146,30 @@ page 50010 ad_SeminarRegistration
         }
     }
 
+    actions
+    {
+        area(Navigation)
+        {
+            group("&Seminar Registration")
+            {
+                action("Co&mments")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Co&mments';
+                    Image = Comment;
+                    RunObject = page ad_SeminarCommentSheet;
+                    RunPageLink = "No." = field("No.");
+                    RunPageView = where("Document Type" = const("Seminar Registration"));
+                }
+                action("&Charges")
+                {
+                    ApplicationArea = All;
+                    Caption = '&Charges';
+                    Image = Cost;
+                    RunObject = page ad_SeminarCharges;
+                    RunPageLink = "Document No." = field("No.");
+                }
+            }
+        }
+    }
 }
