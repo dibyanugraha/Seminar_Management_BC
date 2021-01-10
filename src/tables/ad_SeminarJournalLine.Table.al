@@ -93,7 +93,7 @@ table 50031 ad_SeminarJournalLine
             Caption = 'Participant Name';
             DataClassification = CustomerContent;
         }
-        field(18; Chargable; Boolean)
+        field(18; Chargeable; Boolean)
         {
             Caption = 'Chargable';
             DataClassification = CustomerContent;
