@@ -2,6 +2,8 @@ table 50004 ad_SeminarCommentLine
 {
     Caption = 'Seminar Comment Line';
     DataClassification = CustomerContent;
+    LookupPageId = ad_SeminarCommentList;
+    DrillDownPageId = ad_SeminarCommentList;
 
     fields
     {
