@@ -2,6 +2,7 @@ table 50010 ad_SeminarRegistrationHeader
 {
     Caption = 'Seminar Registration Header';
     DataClassification = CustomerContent;
+    LookupPageId = ad_SeminarRegistrationList;
 
     fields
     {

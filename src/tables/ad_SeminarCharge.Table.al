@@ -2,6 +2,7 @@ table 50012 ad_SeminarCharge
 {
     Caption = 'ad_SeminarCharge';
     DataClassification = CustomerContent;
+    LookupPageId = ad_SeminarCharges;
 
     fields
     {
