@@ -287,6 +287,10 @@ table 50010 ad_SeminarRegistrationHeader
         SeminarRegHeader: Record ad_SeminarRegistrationHeader;
         SeminarCommentLine: Record ad_SeminarCommentLine;
         ChangeSeminarRoomQst: Label 'This Seminar is for %1 participants. \The selected Room has a maximum of %2 participants \Do you want to change %3 for the Seminar from %4 to %5?';
+        SeminarRegLine: Record ad_SeminarRegistrationLine;
+        SeminarCharge: Record ad_SeminarCharge;
+        ErrCannotDeleteLine: Label 'Cannot delete the Seminar Registration, there exists at least one %1 where %2=%3.';
+        ErrCannotDeleteCharge: Label 'Cannot delete the Seminar Registration, there exists at least one %1.';
 
     trigger OnInsert()
     begin
@@ -301,6 +305,23 @@ table 50010 ad_SeminarRegistrationHeader
     trigger OnDelete()
     begin
         TestField(Status, Status::Cancelled);
+
+        SeminarRegLine.RESET;
+        SeminarRegLine.SETRANGE("Document No.", "No.");
+        SeminarRegLine.SETRANGE(Registered, TRUE);
+        IF SeminarRegLine.FIND('-') THEN
+            ERROR(
+              ErrCannotDeleteLine,
+              SeminarRegLine.TABLECAPTION,
+              SeminarRegLine.FIELDCAPTION(Registered),
+              TRUE);
+        SeminarRegLine.SETRANGE(Registered);
+        SeminarRegLine.DELETEALL(TRUE);
+
+        SeminarCharge.RESET;
+        SeminarCharge.SETRANGE("Document No.", "No.");
+        IF NOT SeminarCharge.ISEMPTY THEN
+            ERROR(ErrCannotDeleteCharge, SeminarCharge.TABLECAPTION);
 
         SeminarCommentLine.Reset();
         SeminarCommentLine.SetRange(
