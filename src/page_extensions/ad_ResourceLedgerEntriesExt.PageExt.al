@@ -4,7 +4,7 @@ pageextension 50003 ad_ResourceLedgerEntriesExt extends "Resource Ledger Entries
     {
         addbefore("Job No.")
         {
-            field("Seminar No."; Rec."Seminar No")
+            field("Seminar No."; Rec."Seminar No.")
             {
                 ApplicationArea = All;
             }
