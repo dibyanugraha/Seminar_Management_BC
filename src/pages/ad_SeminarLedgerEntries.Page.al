@@ -70,7 +70,7 @@ page 50021 ad_SeminarLedgerEntries
                 {
                     ApplicationArea = All;
                 }
-                field("Partcipant Name"; Rec."Partcipant Name")
+                field("Partcipant Name"; Rec."Participant Name")
                 {
                     ApplicationArea = All;
                 }

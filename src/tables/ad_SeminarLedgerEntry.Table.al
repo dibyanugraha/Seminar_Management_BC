@@ -75,7 +75,7 @@ table 50032 ad_SeminarLedgerEntry
             Caption = 'Participant Contact No.';
             DataClassification = CustomerContent;
         }
-        field(15; "Partcipant Name"; Text[100])
+        field(15; "Participant Name"; Text[100])
         {
             Caption = 'Partcipant Name';
             DataClassification = CustomerContent;
