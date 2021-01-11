@@ -2,7 +2,7 @@ tableextension 50003 ad_ResJournalLineExt extends "Res. Journal Line"
 {
     fields
     {
-        field(50000; "Seminar No"; Code[20])
+        field(50000; "Seminar No."; Code[20])
         {
             Caption = 'Seminar No';
             DataClassification = CustomerContent;
