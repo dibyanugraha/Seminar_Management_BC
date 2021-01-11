@@ -1,4 +1,4 @@
-codeunit 50000 ad_SeminarRegShowLedger
+codeunit 50004 ad_SeminarRegShowLedger
 {
     TableNo = ad_SeminarRegister;
 
