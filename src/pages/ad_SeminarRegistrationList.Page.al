@@ -101,7 +101,7 @@ page 50013 ad_SeminarRegistrationList
                     ApplicationArea = All;
                     Image = PostDocument;
                     Promoted = true;
-                    RunObject = codeunit ad_SeminarPost;
+                    RunObject = codeunit ad_SeminarPostYesNo;
                 }
             }
         }
