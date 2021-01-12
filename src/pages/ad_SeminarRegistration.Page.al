@@ -171,5 +171,22 @@ page 50010 ad_SeminarRegistration
                 }
             }
         }
+        area(Processing)
+        {
+            group(Posting)
+            {
+                Image = Post;
+                Caption = 'Posting';
+
+                action("P&ost")
+                {
+                    Caption = 'P&ost';
+                    ApplicationArea = All;
+                    Image = PostDocument;
+                    Promoted = true;
+                    RunObject = codeunit ad_SeminarPost;
+                }
+            }
+        }
     }
 }
