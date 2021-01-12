@@ -1,4 +1,4 @@
-codeunit 50001 ad_EventSubResJnlPostLine
+codeunit 50099 ad_EventSubResJnlPostLine
 {
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Res. Jnl.-Post Line", 'OnBeforeResLedgEntryInsert', '', false, false)]
     local procedure OnBeforeResLedgEntryInsert(
