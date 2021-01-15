@@ -54,17 +54,56 @@ page 50001 ad_SeminarList
     }
     actions
     {
+        area(Creation)
+        {
+            action("Seminar Re&gistration")
+            {
+                Caption = 'Seminar Re&gistration';
+                ApplicationArea = All;
+                Image = NewTimesheet;
+                Promoted = true;
+                PromotedCategory = New;
+                RunObject = page ad_SeminarRegistration;
+                RunPageLink = "Seminar No." = field("No.");
+                RunPageMode = Create;
+            }
+        }
         area(Navigation)
         {
             group("&Seminar")
             {
                 Caption = '&Seminar';
-
+                action("Ledger E&ntries")
+                {
+                    Caption = 'Ledger E&ntries';
+                    ApplicationArea = All;
+                    Image = WarrantyLedger;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = page ad_SeminarLedgerEntries;
+                    RunPageLink = "Seminar No." = field("No.");
+                }
                 action("C&omments")
                 {
+                    Caption = 'C&omments';
                     Image = Comment;
                     RunObject = page "Comment Sheet";
                     RunPageLink = "Table Name" = const(Seminar), "No." = field("No.");
+                }
+            }
+            group("&Registration")
+            {
+                Caption = '&Registration';
+                Image = RegisteredDocs;
+                action("&Registrations")
+                {
+                    Caption = '&Registrations';
+                    ApplicationArea = All;
+                    Image = Timesheet;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = page ad_SeminarRegistrationList;
+                    RunPageLink = "Seminar No." = field("No.");
                 }
             }
         }
