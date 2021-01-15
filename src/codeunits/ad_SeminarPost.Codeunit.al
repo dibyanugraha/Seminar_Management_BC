@@ -263,7 +263,7 @@ codeunit 50000 ad_SeminarPost
         SeminarCharge.SETRANGE("Document No.", SeminarRegHeader."No.");
         IF SeminarCharge.FINDSET(FALSE, FALSE) THEN BEGIN
             REPEAT
-                PostSeminarJnlLine(3); // Charge
+                PostSeminarJnlLine(SeminarJnlLine."Charge Type"::Charge); // Charge
             UNTIL SeminarCharge.NEXT = 0;
         END;
     END;
