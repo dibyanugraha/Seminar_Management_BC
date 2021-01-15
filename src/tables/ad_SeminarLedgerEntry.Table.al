@@ -152,6 +152,6 @@ table 50032 ad_SeminarLedgerEntry
         {
             Clustered = true;
         }
+        key(Index01; "Document No.", "Posting Date") { }
     }
-
 }
