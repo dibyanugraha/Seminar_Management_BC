@@ -300,6 +300,12 @@ table 50010 ad_SeminarRegistrationHeader
             NoSeriesMgt.InitSeries(SeminarSetup."Seminar Registration Nos.", xRec."No. Series", 0D, "No.", "No. Series");
         END;
         InitRecord;
+
+        if GetFilter("Seminar No.") = '' then
+            exit;
+
+        IF GetRangeMin("Seminar No.") = GetRangeMax("Seminar No.") THEN
+            Validate("Seminar No.", GetRangeMin("Seminar No."));
     end;
 
     trigger OnDelete()
