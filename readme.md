@@ -1,22 +1,22 @@
-# Dynamics 365 Business Central Seminar Registration
+# Dynamics 365 Business Central Seminar Management
 
 ## Background
-Eons ago, Microsoft published official technical training course with Dynamics NAV 2013. It was title "C/SIDE Solution Development" with real world case creating a Seminar Management Module.
+Eons ago, Microsoft published official technical training courses for Dynamics NAV. It was titled "C/SIDE Solution Development" with study case creating a Seminar Management Module for Dynamics NAV 2013.
 
-Nowadays, of course, that training is outdated and no longer applicable to be use.
+Nowadays, of course, that training is very outdated and is no longer applicable to be used.
 
-This application is intended to reimplement that training course as close as possible using Extension and AL Language.
+This application is intended to reimplement that training courses as close as possible using Extension and AL Language, along with some improvements from latest BC.
 
 ## Structure
-Each chapter will be divided into branches. Main/Master branch always provide the most complete source code of course.
+Each chapter will be divided into branches. Main/Master branch always provide the most complete source code.
 
 ## Additional Module
 These are the list that currently (hopefully) will be added to the solution
-1.	(Basic) Approval integration to seminar registration
-2.	Reverse posting/Cancel seminar registration
+1.  (Basic) Approval integration to seminar registration
+2.  Reverse posting/Cancel seminar registration
 3.  Free pick which seminar ledger entries that will be invoiced instead of just a report along
 4.  Add remaining unbilled amount to seminar ledger entries incase of participants is invoiced partially (non sense, but just for fun)
-5.  And also, billed amount and paid amount to seminar ledger entries - these amount is normally shown in reports
+5.  And also, adds billed amount and paid amount to seminar ledger entries - these amount is normally shown in reports
 
 ## Notable notes
 You may find my codes little different, there are some codes optimization and tidy up here and there, compared to the original Dynamics NAV 2013 C/AL source code. There are so many changes happened between NAV 2013 and Business Central (currently at BC 17.x a.k.a. 2020 wave 2).
