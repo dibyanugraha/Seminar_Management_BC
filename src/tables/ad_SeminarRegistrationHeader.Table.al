@@ -267,6 +267,11 @@ table 50010 ad_SeminarRegistrationHeader
             Caption = 'Posting No.';
             DataClassification = CustomerContent;
         }
+        field(40; "No. Printed"; Integer)
+        {
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
     keys
     {
