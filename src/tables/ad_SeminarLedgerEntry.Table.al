@@ -2,6 +2,8 @@ table 50032 ad_SeminarLedgerEntry
 {
     Caption = 'Seminar Ledger Entry';
     DataClassification = CustomerContent;
+    LookupPageId = ad_SeminarLedgerEntries;
+    DrillDownPageId = ad_SeminarLedgerEntries;
 
     fields
     {

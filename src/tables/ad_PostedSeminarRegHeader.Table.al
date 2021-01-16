@@ -2,7 +2,8 @@ table 50018 ad_PostedSeminarRegHeader
 {
     Caption = 'Posted Seminar Reg. Header';
     DataClassification = CustomerContent;
-    LookupPageId = ad_SeminarRegistrationList;
+    LookupPageId = ad_PostedSeminarRegList;
+    DrillDownPageId = ad_PostedSeminarRegList;
 
     fields
     {
