@@ -144,5 +144,25 @@ page 50021 ad_SeminarLedgerEntries
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action("&Navigate")
+            {
+                Image = Navigate;
+                Promoted = true;
+                PromotedCategory = Process;
+                ApplicationArea = All;
 
+                trigger OnAction()
+                begin
+                    Navigate.SetDoc(Rec."Posting Date", Rec."Document No.");
+                    Navigate.Run();
+                end;
+            }
+        }
+    }
+    var
+        Navigate: Page Navigate;
 }
